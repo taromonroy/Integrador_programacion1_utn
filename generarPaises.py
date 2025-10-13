@@ -6,33 +6,38 @@ def obtener_y_guardar_paises(url, nombre_archivo, carpeta_salida):
     """
     Obtiene datos de la API y los guarda en un CSV dentro de una carpeta específica.
     """
+    #verifica si la carpeta existe, si no existe la crea para almacenar los .csv de los paises
     if not os.path.exists(carpeta_salida):
         os.makedirs(carpeta_salida)
         print(f"Carpeta '{carpeta_salida}' creada exitosamente.")
 
-    # Creamos la ruta completa del archivo (esto está correcto)
+    # Creamos la ruta completa del archivo 
     ruta_completa_archivo = os.path.join(carpeta_salida, nombre_archivo)
     
     print(f"Obteniendo datos desde {url}...")
-
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-    }
-
+    
     try:
-        response = requests.get(url, headers=headers)
+        #envia una solicitud HTTP GET a la url
+        response = requests.get(url) 
+
+        #verifica que la solicitud fue exitosa
         response.raise_for_status()
         
+        #convierte el cuerpo de la respuesta HTTP de la api a formato JSON
         paises = response.json()
         print(f"Se encontraron {len(paises)} territorios. Procesando...")
 
+        #Abre el archivo CSV 
         # Usamos la variable con la ruta completa para guardar el archivo
         with open(ruta_completa_archivo, 'w', newline='', encoding='utf-8') as archivo_csv:
+            #Define las columnas que tendra el CSV y un objeto DictWriter
             campos = ['nombre_comun', 'nombre_oficial', 'capital', 'region', 'poblacion', 'area']
             escritor = csv.DictWriter(archivo_csv, fieldnames=campos)
             escritor.writeheader()
             
+            #recorre la lista de diccionarios de paises obtenida de la api
             for pais in paises:
+                #crea un diccionario con los elementos de la api
                 escritor.writerow({
                     'nombre_comun': pais.get('name', {}).get('common', 'N/A'),
                     'nombre_oficial': pais.get('name', {}).get('official', 'N/A'),
