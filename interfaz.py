@@ -142,11 +142,6 @@ def mostrar_ventana_estadisticas():
         return
         
     try:
-        # --- CORRECCIÓN CLAVE ---
-        # El bucle 'for' que convertía a float FUE ELIMINADO.
-        # Ya no es necesario convertir aquí, porque 'cargar_datos_en_memoria'
-        # ya creó los campos 'poblacion_num' y 'area_num' (como int).
-        
         # Usamos los campos _num (que son enteros) para todos los cálculos.
         # Se usa 'dataset_paises' para que las estadísticas sean SIEMPRE globales.
         pais_max_pob = max(dataset_paises, key=lambda p: p['poblacion_num']); 
@@ -210,12 +205,11 @@ def actualizar_vista():
     min_area = _obtener_valor_numerico(campo_min_superficie, default_val=0)
     max_area = _obtener_valor_numerico(campo_max_superficie, default_val=999999999999999)
 
-    # --- ¡VALIDACIÓN AÑADIDA! ---
+    # --- VALIDACIÓN ---
     # Si CUALQUIERA de los campos numéricos tuvo un error (y devolvió None),
     # detenemos el filtrado. El usuario ya vio el messagebox.
     if min_pob is None or max_pob is None or min_area is None or max_area is None:
         return # Detener la función aquí, no hacer nada.
-    # --- FIN DE LA VALIDACIÓN ---
 
     # 3. Empezar SIEMPRE desde la lista maestra
     lista_temporal = dataset_paises[:]
@@ -235,7 +229,6 @@ def actualizar_vista():
         ]
 
     # 6. Aplicar filtro de POBLACIÓN
-    # (Ya no se necesita 'if min_pob is not None' porque nos aseguramos de que no sea None)
     lista_temporal = [
         pais for pais in lista_temporal 
         if min_pob <= pais['poblacion_num'] <= max_pob 
@@ -298,15 +291,15 @@ def _obtener_valor_numerico(entrada_widget, default_val=None):
         
         if valor_int < 0:
             messagebox.showwarning("Valor Inválido", "No se permiten números negativos en los filtros de rango.")
-            return None # <--- CAMBIO CLAVE: Señala un error
+            return None 
             
         return valor_int # Número válido
         
     except ValueError:
         messagebox.showwarning("Entrada Inválida", "Por favor, introduce solo números ENTEROS válidos para los filtros.")
-        return None # <--- CAMBIO CLAVE: Señala un error
+        return None 
     except AttributeError: 
-        return None # <--- CAMBIO CLAVE: Señala un error
+        return None 
 
 # --- FUNCIÓN PRINCIPAL DE LA INTERFAZ ---
 

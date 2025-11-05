@@ -62,7 +62,7 @@ def obtener_y_guardar_paises(url, nombre_archivo, carpeta_salida):
                     'capital': ', '.join(pais.get('capital', ['N/A'])),
                     
                     'region': pais.get('region', 'N/A'),
-                    'poblacion': pais.get('population', 0),
+                    'poblacion': int(pais.get('population', 0)), #onvierte una población en int
                     'area': int(pais.get('area', 0.0)) # Convierte el área a entero
                 })
         print(f"¡Éxito! Los datos han sido guardados en el archivo '{ruta_completa_archivo}'.")
@@ -74,7 +74,7 @@ def obtener_y_guardar_paises(url, nombre_archivo, carpeta_salida):
     except Exception as e:
         print(f"Ocurrió un error inesperado: {e}")
 
-# --- NUEVA FUNCIÓN AÑADIDA ---
+
 def unir_csvs_en_uno(carpeta_entrada, archivo_salida):
     """
     Busca todos los archivos .csv en una carpeta, les añade una columna 'continente',
