@@ -100,6 +100,8 @@ Este archivo consolida los datos de todos los continentes y añade las siguiente
 * `continente`: Continente (columna añadida durante el procesamiento).
 
 La aplicación interna luego crea versiones numéricas (`poblacion_num`, `area_num`) en memoria para que los filtros y ordenamientos sean eficientes.
+## 📹 Video Explicativo
+Link: https://youtu.be/hclPgxYFY6g
 
 ## 👥 Integrantes
 
